@@ -101,6 +101,25 @@ router.post("/triggerSpecialAbility/:carId", async (req, res) => {
   }
 });
 
+router.get("/getUltimateAbility/:carId", async (req, res) => {
+  const { carId } = req.params;
+
+  try {
+    const car = await Car.findOne({ where: { carId: carId } });
+    if (!car) {
+      return res.status(404).json({ message: "Car not found" });
+    }
+
+    // Return the status of the ultimate ability
+    return res
+      .status(200)
+      .json({ specialAbilityStatus: car.specialAbilityStatus });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
 router.post("/updateScore/:carId", async (req, res) => {
   const { carId } = req.params;
   const { score } = req.body;
